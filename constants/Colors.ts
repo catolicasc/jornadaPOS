@@ -23,4 +23,12 @@ export const Colors = {
     tabIconDefault: '#9BA1A6',
     tabIconSelected: tintColorDark,
   },
+  primary: "#FF4924", // Cor principal (laranja/vermelho)
+  black: "#060606", // Preto para fundos
+  gray: "#CACACA", // Cinza para textos secundários
+  darkGray: "#333333", // Cinza escuro para elementos
+  lightGray: "#E5E5E5", // Cinza claro para divisores
+  primaryLight: "#FF7A5E", // Versão mais clara da cor principal
+  primaryDark: "#CC3A1D", // Versão mais escura da cor principal
+  overlay: "rgba(6, 6, 6, 0.8)", // Overlay para modais
 };
