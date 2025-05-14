@@ -1,9 +1,19 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import {Colors} from "@/constants/Colors";
+import { Colors } from "@/constants/Colors";
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import { clearCart } from '@/store/cartSlice';
+import {useRouter} from "expo-router";
 
-export const Header = ({ onBack, onClear, onCart, cartItemCount, onConfig }) => {
+export const Header = ({ onBack, onConfig }) => {
+    const dispatch = useDispatch();
+    const router = useRouter()
+    const cartItemCount = useSelector((state: RootState) =>
+        state.cart.items.reduce((sum, item) => sum + item.quantity, 0)
+    );
+
     return (
         <View style={styles.header}>
             <View style={styles.left}>
@@ -13,10 +23,10 @@ export const Header = ({ onBack, onClear, onCart, cartItemCount, onConfig }) => 
                 <Text style={styles.title}>PRODUTOS</Text>
             </View>
             <View style={styles.right}>
-                <TouchableOpacity onPress={onClear} style={styles.button}>
+                <TouchableOpacity onPress={() => dispatch(clearCart())} style={styles.button}>
                     <Ionicons name="trash-outline" size={22} color={Colors.primary} />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={onCart} style={styles.button}>
+                <TouchableOpacity onPress={() => router.push("/cart")} style={styles.button}>
                     <Ionicons name="cart-outline" size={22} color={Colors.primary} />
                     {cartItemCount > 0 && (
                         <View style={styles.badge}><Text style={styles.badgeText}>{cartItemCount}</Text></View>

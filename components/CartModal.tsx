@@ -1,23 +1,27 @@
 import { View, Text, Modal, TouchableOpacity, ScrollView, Image, StyleSheet } from "react-native"
 import { Ionicons } from "@expo/vector-icons"
-import { COLORS, type CartItem } from "@/types"
+import { COLORS } from "@/types"
+import { useSelector, useDispatch } from "react-redux"
+import { RootState } from "@/store"
+import { closeCartModal } from "@/store/cartModalSlice"
 
 interface CartModalProps {
-    visible: boolean
-    onClose: () => void
-    cartItems: CartItem[]
-    cartTotal: number
     onCheckout: () => void
 }
 
-export default function CartModal({ visible, onClose, cartItems, cartTotal, onCheckout }: CartModalProps) {
+export default function CartModal({ onCheckout }: CartModalProps) {
+    const dispatch = useDispatch()
+    const visible = useSelector((state: RootState) => state.cartModal.visible)
+    const cartItems = useSelector((state: RootState) => state.cart.items)
+    const cartTotal = cartItems.reduce((total, item) => total + item.price * item.quantity, 0)
+
     return (
-        <Modal animationType="slide" transparent={true} visible={visible} onRequestClose={onClose}>
+        <Modal animationType="slide" transparent={true} visible={visible} onRequestClose={() => dispatch(closeCartModal())}>
             <View style={styles.modalOverlay}>
                 <View style={styles.modalContainer}>
                     <View style={styles.modalHeader}>
                         <Text style={styles.modalTitle}>Meu Carrinho</Text>
-                        <TouchableOpacity onPress={onClose}>
+                        <TouchableOpacity onPress={() => dispatch(closeCartModal())}>
                             <Ionicons name="close" size={24} color={COLORS.gray} />
                         </TouchableOpacity>
                     </View>
